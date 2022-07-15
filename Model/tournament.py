@@ -11,4 +11,3 @@ class Tournament:
         self.time_control = time_control
         self.players = players
         self.description = description
-
