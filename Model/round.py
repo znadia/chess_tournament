@@ -20,6 +20,6 @@ class Round:
         second_half = self.all_players_keys[middle_list:]
     
         for a,b in zip(first_half,second_half):
-            self.filtered_players.append((a,b))
+            self.filtered_players.append([a,b])
 
     
