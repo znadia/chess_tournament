@@ -1,3 +1,4 @@
+import json
 
 class Player:
 
@@ -8,11 +9,8 @@ class Player:
         self.sex = sex
         self.score = 0
 
-    def __str__(self):
-        return f"{self.name}, {self.first_name}, {self.d_o_b}, {self.sex}"
+    # def __str__(self):
+    #     return f"{self.name}, {self.first_name}, {self.d_o_b}, {self.sex}, {self.score}"
 
     def __repr__(self):
-        return f"{self.first_name}"
-
-    def add_score(self, a):
-        self.score += a
+        return f"name: {self.name}, first_name: {self.first_name}, d_o_b: {self.d_o_b}, sex: {self.sex}, score: {self.score}"
