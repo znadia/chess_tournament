@@ -16,19 +16,19 @@ console = Console()
 
 dic_info_tournament = {}
 
-all_players = {}
+dic_all_players = {}
 
-
+################################################
 questions = [
     inquirer.List(
         "size",
         message="Que voulez-vous faire ?",
-        choices=["Créer un tournoi", "Quitter"],
+        choices=["Créer un tournoi","Visualiser les rapports", "Quitter"],
     ),
 ]
 answers = inquirer.prompt(questions)
 
-# print(answers["size"])
+print(answers["size"])
 
 if answers["size"] == "Quitter":
     print("Au revoir")
@@ -37,16 +37,16 @@ if answers["size"] == "Quitter":
 ################################# FCT Création tournoie #####################################
 
 
-def display_info_tournament():
+def create_info_tournament():
 
     t_name = input("Nom du tournoi: ")
     t_place = input("Lieu du tournoi: ")
     t_date = input("Date du tournoi: ")
     t_time_control = input("Controle du temps ")
-   # t_players = create_players()
-    t_players = 'nad'
+    t_players = create_players()
+    #t_players = 'nad'
     t_description = input("Description du tournoi ")
-    t = Tournament(t_name, t_place, t_date, t_time_control, t_players, t_description)
+    t = Tournament(t_name, t_place, t_date, t_time_control, t_description)
     dic_info_tournament[t_name] = t
 
 
@@ -78,50 +78,52 @@ def create_players():
         # p_d_o_b = int_date_birthday()
         p_d_o_b = input("date de naissance: ")
         p_sex = input("Homme ou Femme: ")
-        p_score = 0
         p = Player(p_name, p_first_name, p_d_o_b, p_sex)
-        all_players["joueur_" + str(i)] = p
+        dic_all_players["joueur_" + str(i)] = p
     
-    return all_players
+
+    return dic_all_players
 
 
-display_info_tournament()
-
-print("hello :", dic_info_tournament)
 
 
-"""
+#print("fonction dic: ", dic_all_players['joueur_1'].__dict__)
 
-name_tournament = 
+################################# CRÉATION DataBase ######################################
 
-name_db = database.db_file()
 
-# b = "ddd"
+create_info_tournament()
 
-# for a, b in all_players.items():
-#     print("l'élément de clé", a, "vaut", b)
-#     print(type(b))
-#     print("\n")
+name_tournament = list(dic_info_tournament.keys())[0]
 
-#print(all_players)
+db_file = database.create_db_file(name_tournament)
 
-#print(type(all_players))
 
-#database.insert(all_players.copy())
+################################################
 
-"""
+questions = [
+    inquirer.List(
+        "size",
+        message="Que voulez-vous faire ?",
+        choices=["Enregistrer les informations", "Continuer", "Quitter"],
+    ),
+]
+answers = inquirer.prompt(questions)
 
-"""
-a = 'miroir'
+if answers["size"] == "Enregistrer les informations":
+    database.insert_db_players(dic_info_tournament, db_file)
+    database.insert_db_players(dic_all_players, db_file)
 
-db = database.db_file(a)
 
-database.insert_db_players(all_players, db)
+if answers["size"] == "Quitter":
+    print("Au revoir")
+    quit()
 
-"""
-"""
 
-first_round = Round(name="premier_round", all_players=all_players)
+
+
+
+first_round = Round(name="premier_round", all_players=dic_all_players)
 
 
 
@@ -149,7 +151,7 @@ def display_table_tournament(players, a):
 
 display_table_tournament(first_round.all_players, "0")
 print(first_round.all_players)
-print(all_players["joueur_1"].score)
+print(dic_all_players["joueur_1"].score)
 first_round.display_match()
 
 
@@ -226,7 +228,7 @@ for i in range(len(list_match)):
     name_match = "match_" + str(i)
     print(name_match)
     a = display_instance_match(name_match, matches)
-    add_score_match(a, all_players)
+    add_score_match(a, dic_all_players)
 
 display_table_first_round(list_match, "0", "0")
 
@@ -279,4 +281,3 @@ print("filtered_player 222 : ", list_match)
 fonction2 = new_round(list_players, list_match)
 print(fonction2) 
 
-"""
