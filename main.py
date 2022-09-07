@@ -2,7 +2,7 @@ from model.tournament import Tournament
 from model.player import Player
 from model.round import Round
 from model.match import Match
-import database
+#import database
 import json
 import random
 import re
@@ -78,23 +78,30 @@ def create_players():
 
 create_players()
 
-b = "ddd"
+# b = "ddd"
 
-for a, b in all_players.items():
-    print("l'élément de clé", a, "vaut", b)
-    print(type(b))
-    print("\n")
+# for a, b in all_players.items():
+#     print("l'élément de clé", a, "vaut", b)
+#     print(type(b))
+#     print("\n")
 
-print(all_players)
+#print(all_players)
+
+#print(type(all_players))
+
+#database.insert(all_players.copy())
 
 """
-#print(b)
-print(type(all_players))
 
-database.insert(all_players.copy())
+a = 'miroir'
 
-#parsed_json = json.dump(all_players)
-#print(parsed_json)
+db = database.db_file(a)
+
+database.insert_db_players(all_players, db)
+
+
+
+"""
 
 first_round = Round(name="premier_round", all_players=all_players)
 
@@ -158,7 +165,7 @@ def display_instance_match(name_match, players_match):
 ############################### FCT SCORE ##################################
 
 
-def score_match(nom, dic_player):
+def add_score_match(nom, dic_player):
 
     list_score = [0.0, 0.5, 1.0]
     score_p1 = ""
@@ -170,7 +177,6 @@ def score_match(nom, dic_player):
 
     nom.score_player1 += score_p1
     dic_player[nom.player1].score += score_p1
-    print("PRINTTTTT", dic_player[nom.player1].score)
 
     if score_p1 == 0.0:
         list_score = [1.0]
@@ -192,17 +198,65 @@ def score_match(nom, dic_player):
 print(first_round.filtered_players)
 
 ############################### FCT CRÉATION INSTANCES MATCHES ##################################
+list_match = first_round.filtered_players
+list_players = first_round.all_players_keys
 
-for i in range(len(first_round.filtered_players)):
-    matches = first_round.filtered_players[i]
+for i in range(len(list_match)):
+    matches = list_match[i]
     i += 1
     print(i)
     name_match = "match_" + str(i)
     print(name_match)
     a = display_instance_match(name_match, matches)
-    score_match(a, all_players)
+    add_score_match(a, all_players)
 
-display_table_first_round(first_round.filtered_players, "0", "0")
+display_table_first_round(list_match, "0", "0")
 
 display_table_tournament(first_round.all_players, "0")
-"""
+
+####################### création des autres matches ##################################
+
+
+# liste des matches passés
+
+def check_match(list_match, player_1, player_2):
+    sorted_player = tuple(sorted([player_1, player_2]))
+    if sorted_player in list_match:
+        return False
+    else:
+        return sorted_player
+
+print("\n")
+def new_round(list_players, list_match):
+
+    list_players_cop = list_players.copy()
+    new_match = []
+    i = 0
+    x = 1
+    while i < len(list_players_cop):
+        while x < len(list_players_cop):
+            if list_players_cop[i] != list_players_cop[x]:
+                ret = check_match(list_match, list_players_cop[i], list_players_cop[x])
+                if ret != False:
+                    new_match.append(ret)
+                    del list_players_cop[x]
+                    del list_players_cop[i]
+                    x = 0
+                    i = 0
+            x += 1
+    list_match.extend(new_match)
+    return new_match
+
+
+print(list_players)
+print("filtered_player: ", list_match)
+
+fonction = new_round(list_players, list_match)
+print(fonction) 
+
+
+print("joueur == 22 : ", list_players)
+print("filtered_player 222 : ", list_match)
+
+fonction2 = new_round(list_players, list_match)
+print(fonction2) 

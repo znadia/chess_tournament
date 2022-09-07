@@ -1,12 +1,16 @@
 from tinydb import TinyDB, Query
 import json
 
+User = Query()
+
+def db_file(name_file):
+    db = TinyDB('db_' + name_file + '.json')
+    return db
+
+"""
+b = {'name': 'Lina', 'age': 30}
 
 FILE = 'database.json'
-# db = TinyDB('database.json')
-# User = Query()
-
-b = {'name': 'Lina', 'age': 30}
 
 def serialize(params, name_file):
     for key in params:
@@ -66,17 +70,36 @@ def insert(dic):
     # print("DBBBBBBBB", db.all())
     return(dic)
 
+"""
 
-def search():
+def insert_db_players(dic_obj, db):
+    for k,v in dic_obj.items():
+        dic_data  = {}
+        dic_data["num_joueur"] = k
+        dic_data["name"] = v.name
+        dic_data["first_name"] = v.first_name
+        dic_data["d_o_b"] = v.d_o_b
+        dic_data["sex"] = v.sex
+        dic_data["score"] = v.score
+        db.insert(dic_data)
+
+    #print("fiiinnnn \n", db.all())
+"""
+def insert(dic, db):
+    serialize_player(dic, db)
+
+"""
+
+def search(db):
     # Recherche un element dans la db
     result = db.search(User.name == 'John')
     print(result)
 
-def update():
+def update(db):
     # Modifie la db grace a un element
     db.update({'age': 68}, User.name == 'John')
 
-def delete():
+def delete(db):
     # Supprime un element de la db
     db.remove(User.name == 'Lina')
 
