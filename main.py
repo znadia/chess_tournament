@@ -2,7 +2,7 @@ from model.tournament import Tournament
 from model.player import Player
 from model.round import Round
 from model.match import Match
-#import database
+import database
 import json
 import random
 import re
@@ -13,6 +13,8 @@ from rich.table import Table
 
 
 console = Console()
+
+dic_info_tournament = {}
 
 all_players = {}
 
@@ -41,9 +43,14 @@ def display_info_tournament():
     t_place = input("Lieu du tournoi: ")
     t_date = input("Date du tournoi: ")
     t_time_control = input("Controle du temps ")
-    # t_players = input("Controle du temps ")
+   # t_players = create_players()
+    t_players = 'nad'
     t_description = input("Description du tournoi ")
     t = Tournament(t_name, t_place, t_date, t_time_control, t_players, t_description)
+    dic_info_tournament[t_name] = t
+
+
+    return dic_info_tournament
 
 
 ############################# FCT REGEX DATE DE NAISSANCE ###################################
@@ -74,9 +81,20 @@ def create_players():
         p_score = 0
         p = Player(p_name, p_first_name, p_d_o_b, p_sex)
         all_players["joueur_" + str(i)] = p
+    
+    return all_players
 
 
-create_players()
+display_info_tournament()
+
+print("hello :", dic_info_tournament)
+
+
+"""
+
+name_tournament = 
+
+name_db = database.db_file()
 
 # b = "ddd"
 
@@ -93,14 +111,14 @@ create_players()
 
 """
 
+"""
 a = 'miroir'
 
 db = database.db_file(a)
 
 database.insert_db_players(all_players, db)
 
-
-
+"""
 """
 
 first_round = Round(name="premier_round", all_players=all_players)
@@ -260,3 +278,5 @@ print("filtered_player 222 : ", list_match)
 
 fonction2 = new_round(list_players, list_match)
 print(fonction2) 
+
+"""
