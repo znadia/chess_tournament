@@ -226,7 +226,7 @@ def check_match(list_match, player_1, player_2):
     else:
         return sorted_player
 
-print("\n")
+
 def new_round(list_players, list_match):
 
     list_players_cop = list_players.copy()
