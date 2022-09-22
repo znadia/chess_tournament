@@ -7,6 +7,7 @@ import json
 import random
 import re
 import inquirer
+import datetime
 from rich.console import Console
 from rich.table import Table
 
@@ -44,7 +45,6 @@ def create_info_tournament():
     t_date = input("Date du tournoi: ")
     t_time_control = input("Controle du temps ")
     t_players = create_players()
-    #t_players = 'nad'
     t_description = input("Description du tournoi ")
     t = Tournament(t_name, t_place, t_date, t_time_control, t_description)
     dic_info_tournament[t_name] = t
@@ -84,12 +84,9 @@ def create_players():
 
     return dic_all_players
 
-
-
-
 #print("fonction dic: ", dic_all_players['joueur_1'].__dict__)
 
-################################# CRÉATION DataBase ######################################
+################################# CRÉATION Nom DataBase ######################################
 
 
 create_info_tournament()
@@ -101,30 +98,35 @@ db_file = database.create_db_file(name_tournament)
 
 ################################################
 
-questions = [
-    inquirer.List(
-        "size",
-        message="Que voulez-vous faire ?",
-        choices=["Enregistrer les informations", "Continuer", "Quitter"],
-    ),
-]
-answers = inquirer.prompt(questions)
+def what_to_do(fct_db):
 
-if answers["size"] == "Enregistrer les informations":
-    database.insert_db_players(dic_info_tournament, db_file)
-    database.insert_db_players(dic_all_players, db_file)
+    questions = [
+        
+        inquirer.List(
+            "size",
+            message="Que voulez-vous faire ?",
+            choices=["Sauvegarder les informations", "Continuer", "Quitter"],
+        ),
+    ]
+    answers = inquirer.prompt(questions)
+
+    if answers["size"] == "Sauvegarder les informations":
+        fct_db == True
+
+    if answers["size"] == "Quitter":
+        print("Au revoir")
+        quit()
 
 
-if answers["size"] == "Quitter":
-    print("Au revoir")
-    quit()
+what_to_do(database.insert_db_info(dic_info_tournament, db_file))
+#database.insert_db_info(dic_all_players, db_file)
 
 
+#database.display_db(db_file)
 
-
+"""
 
 first_round = Round(name="premier_round", all_players=dic_all_players)
-
 
 
 ################################# TABLEAU JOUEURS #####################################
@@ -150,9 +152,24 @@ def display_table_tournament(players, a):
 
 
 display_table_tournament(first_round.all_players, "0")
-print(first_round.all_players)
-print(dic_all_players["joueur_1"].score)
+
 first_round.display_match()
+
+dic_filtered = {}
+
+
+
+def dic_round_match(dic_filtered, name_round, list_filtered_player):
+    dic_filtered[name_round] = list_filtered_player
+    return dic_filtered
+
+fonction = dic_round_match(dic_filtered, first_round.name, first_round.filtered_players)
+
+print("fonction dic player ---->    ", fonction)
+print(type(fonction))
+
+
+database.insert_db_round(fonction, db_file)
 
 
 ################################# TABLEAU MATCHES #####################################
@@ -217,6 +234,7 @@ def add_score_match(nom, dic_player):
 
 print(first_round.filtered_players)
 
+
 ############################### FCT CRÉATION INSTANCES MATCHES ##################################
 list_match = first_round.filtered_players
 list_players = first_round.all_players_keys
@@ -280,4 +298,4 @@ print("filtered_player 222 : ", list_match)
 
 fonction2 = new_round(list_players, list_match)
 print(fonction2) 
-
+"""

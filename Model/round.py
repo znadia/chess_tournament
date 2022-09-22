@@ -21,4 +21,3 @@ class Round:
     
         for a,b in zip(first_half,second_half):
             self.filtered_players.append((a,b))
-
