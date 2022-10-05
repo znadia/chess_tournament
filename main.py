@@ -98,7 +98,7 @@ db_file = database.create_db_file(name_tournament)
 
 ################################################
 
-def what_to_do(fct_db):
+def what_to_do(dic):
 
     questions = [
         
@@ -111,23 +111,28 @@ def what_to_do(fct_db):
     answers = inquirer.prompt(questions)
 
     if answers["size"] == "Sauvegarder les informations":
-        fct_db == True
+        database.insert_db_info(dic, db_file)
 
     if answers["size"] == "Quitter":
         print("Au revoir")
         quit()
 
 
-what_to_do(database.insert_db_info(dic_info_tournament, db_file))
-#database.insert_db_info(dic_all_players, db_file)
+what_to_do(dic_info_tournament)
+database.insert_db_info(dic_all_players, db_file)
 
 
-#database.display_db(db_file)
 
-"""
 
 first_round = Round(name="premier_round", all_players=dic_all_players)
 
+print("dic -------->>   ", dic_all_players)
+ 
+nul = set(first_round.all_players.name)
+
+print(nul)
+
+"""
 
 ################################# TABLEAU JOUEURS #####################################
 
@@ -155,9 +160,10 @@ display_table_tournament(first_round.all_players, "0")
 
 first_round.display_match()
 
+
+###################### insert les premier match de filtered player ####################
+
 dic_filtered = {}
-
-
 
 def dic_round_match(dic_filtered, name_round, list_filtered_player):
     dic_filtered[name_round] = list_filtered_player
@@ -165,11 +171,8 @@ def dic_round_match(dic_filtered, name_round, list_filtered_player):
 
 fonction = dic_round_match(dic_filtered, first_round.name, first_round.filtered_players)
 
-print("fonction dic player ---->    ", fonction)
-print(type(fonction))
 
-
-database.insert_db_round(fonction, db_file)
+#database.insert_db_round(fonction, db_file)
 
 
 ################################# TABLEAU MATCHES #####################################
@@ -292,10 +295,12 @@ print("filtered_player: ", list_match)
 fonction = new_round(list_players, list_match)
 print(fonction) 
 
+#list_player_score = []
 
-print("joueur == 22 : ", list_players)
-print("filtered_player 222 : ", list_match)
+for player in first_round.all_players:
 
-fonction2 = new_round(list_players, list_match)
-print(fonction2) 
+    list_player_score.append(first_round.all_players[player].score)
+print("---------->     ", list_player_score)
+print("sorted ----------->    ", sorted(list_player_score))
+
 """
