@@ -129,7 +129,8 @@ first_round = Round(name="premier_round", all_players=dic_all_players)
 print("dic2222 -------->>   ", dic_all_players)
 print("\n")
 
-#v = first_round.all_players["joueur_1"].name
+
+# Récupère la valeur du nom sous forme de liste
 list_vide = []
 
 for k, v in first_round.all_players.items():
@@ -138,20 +139,12 @@ for k, v in first_round.all_players.items():
     list_vide.append(value)
 
 
+# Trie les valeur 
 trier = sorted(list_vide)
-
 print("trier : ", trier)
 
-def cherch(a):
-    b = a in first_round.all_players
-    if b == True:
-       print("nadia est présente")
-
-cherch("nadia")
-
+# pour retrouver la clef de la valeur (valeur)
 dic_players_cop = first_round.all_players
-
-
 
 def find_key(v): 
     for k, val in dic_players_cop.items(): 
@@ -159,9 +152,9 @@ def find_key(v):
         if v == val.name: 
             return k
         del(k)
-
-
     return "Clé n'existe pas"
+
+
 
 liste_trier = []
 
@@ -169,8 +162,16 @@ for i in trier:
     k = find_key(i)
     liste_trier.append(k)
 
-print("liste des joueur trir :   ", liste_trier)
+print("liste des joueur trier :   ", liste_trier)
 
+"""
+def cherch(a):
+    b = a in first_round.all_players
+    if b == True:
+       print("nadia est présente")
+
+cherch("nadia")
+"""
 
 """
 
