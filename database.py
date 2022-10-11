@@ -10,11 +10,11 @@ def create_db_file(name_file):
 
 def insert_db_info(dic_obj, db):
         # Insert dans la db 
-        if True:
-                for key in dic_obj.keys():
-                        entry = {}
-                        entry[key]= dic_obj[key].__dict__
-                        db.insert(entry)
+        for key in dic_obj.keys():
+                entry = {}
+                entry[key]= dic_obj[key].__dict__
+                db.insert(entry)
+
 
 def insert_db_round(list_match, db):
         db.insert(list_match)
@@ -26,6 +26,9 @@ def dic_round_match(dic_filtered, name_round, list_filtered_player):
 
 def display_db(db):
         print(db.all())
+
+
+
 
 
 def search(db):

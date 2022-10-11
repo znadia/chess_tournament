@@ -13,5 +13,5 @@ class Player:
     #    return f"{self.name}, {self.first_name}, {self.d_o_b}, {self.sex}, {self.score}"
 
     def __repr__(self):
-        #return f"namesssss: {self.name}, first_name: {self.first_name}, d_o_b: {self.d_o_b}, sex: {self.sex}, score: {self.score}"
-        return self.name
+        return f"namesssss: {self.name}, first_name: {self.first_name}, d_o_b: {self.d_o_b}, sex: {self.sex}, score: {self.score}"
+        #return self.name
