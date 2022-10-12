@@ -72,7 +72,7 @@ def int_date_birthday():
 
 def create_players():
 
-    for i in range(1, 5):
+    for i in range(1, 9):
         p_name = input("ton nom: ")
         p_first_name = input("ton prénom: ")
         # p_d_o_b = int_date_birthday()
@@ -126,70 +126,11 @@ database.insert_db_info(dic_all_players, db_file)
 first_round = Round(name="premier_round", all_players=dic_all_players)
 
 
-print("dic2222 -------->>   ", dic_all_players)
-print("\n")
-
-
-# Récupère la valeur du nom sous forme de liste
-list_vide = []
-
-for k, v in first_round.all_players.items():
-    value = first_round.all_players[k].name
-    print("obj -------->> ", value)
-    list_vide.append(value)
-
-
-# Trie les valeur 
-score_sorted = sorted(list_vide)
-print("trier : ", score_sorted)
-
-# pour retrouver la clef d'une valeur (valeur)
-
-def find_key(v, dic_players):
-    for k, val in dic_players.items(): 
-        print ("val  --->  ", v)
-        print ("k  --->  ", k)
-        if v == val.name:
-            return k
-
-    return "Clé n'existe pas"
-
-
-# Crée une liste trier des clefs
-
-players_cop = first_round.all_players.copy()
-liste_trier = []
-for i in score_sorted:
-    print("iii   :  ", i)
-    k = find_key(i, players_cop)
-    index = score_sorted.index(i)
-    first_round.all_players[k].ranking = index + 1
-    liste_trier.append(k)
-    del(players_cop[k])
-
-
-
-print("liste des joueur trier :   ", liste_trier)
-print("toooooouutttt roundd  -----  >   ", first_round.all_players)
-print("toooooouutttt  -----  >   ", dic_all_players )
-
-
-
-"""
-def cherch(a):
-    b = a in first_round.all_players
-    if b == True:
-       print("nadia est présente")
-
-cherch("nadia")
-"""
-
-"""
 
 ################################# TABLEAU JOUEURS #####################################
 
 
-def display_table_tournament(players, a):
+def display_table_tournament(players):
 
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Joueurs")
@@ -201,19 +142,19 @@ def display_table_tournament(players, a):
         table.add_row(
             player,
             f"{players[player].first_name} {players[player].name}",
-            a,
+            f"{players[player].ranking}",
             f"{players[player].score}",
         )
 
     console.print(table)
 
 
-display_table_tournament(first_round.all_players, "0")
+display_table_tournament(first_round.all_players)
 
 first_round.display_match()
 
 
-###################### insert les premier match de filtered player ####################
+###################### insert dans la db les premier match de filtered player ####################
 
 dic_filtered = {}
 
@@ -230,28 +171,18 @@ fonction = dic_round_match(dic_filtered, first_round.name, first_round.filtered_
 ################################# TABLEAU MATCHES #####################################
 
 
-def display_table_first_round(players, a, b):
+def display_table_first_round(players):
 
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Matches")
-    table.add_column("Classement")
-    table.add_column("Score")
 
     for player in players:
-        table.add_row(f"{player[0]} vs {player[1]}", a, b)
+        table.add_row(f"{player[0]} vs {player[1]}")
 
     console.print(table)
 
 
-display_table_first_round(first_round.filtered_players, "0", "0")
-
-############################### FCT CRÉATION MATCHES ##################################
-
-
-def display_instance_match(name_match, players_match):
-
-    name_match = Match(name=name_match, players_pair=players_match)
-    return name_match
+display_table_first_round(first_round.filtered_players)
 
 
 ############################### FCT SCORE ##################################
@@ -267,7 +198,7 @@ def add_score_match(nom, dic_player):
         score_p1 = input("Veuillez entrer le score du " + nom.player1 + ": ")
         score_p1 = float(score_p1)
 
-    nom.score_player1 += score_p1
+    #nom.score_player1 += score_p1
     dic_player[nom.player1].score += score_p1
 
     if score_p1 == 0.0:
@@ -283,11 +214,20 @@ def add_score_match(nom, dic_player):
         score_p2 = input("Veuillez entrer le score du " + nom.player2 + ": ")
         score_p2 = float(score_p2)
 
-    nom.score_player2 += score_p2
+    #nom.score_player2 += score_p2
     dic_player[nom.player2].score += score_p2
 
 
 print(first_round.filtered_players)
+
+
+############################### FCT CRÉATION MATCHES ##################################
+
+
+def display_instance_match(name_match, players_match):
+
+    name_match = Match(name=name_match, players_pair=players_match)
+    return name_match
 
 
 ############################### FCT CRÉATION INSTANCES MATCHES ##################################
@@ -297,21 +237,21 @@ list_players = first_round.all_players_keys
 for i in range(len(list_match)):
     matches = list_match[i]
     i += 1
-    print(i)
     name_match = "match_" + str(i)
     print(name_match)
     a = display_instance_match(name_match, matches)
     add_score_match(a, dic_all_players)
 
-display_table_first_round(list_match, "0", "0")
+display_table_first_round(list_match)
 
-display_table_tournament(first_round.all_players, "0")
+display_table_tournament(first_round.all_players)
 
 ####################### création des autres matches ##################################
 
 
 # liste des matches passés
 
+###############
 def check_match(list_match, player_1, player_2):
     sorted_player = tuple(sorted([player_1, player_2]))
     if sorted_player in list_match:
@@ -341,18 +281,43 @@ def new_round(list_players, list_match):
     return new_match
 
 
-print(list_players)
-print("filtered_player: ", list_match)
 
-fonction = new_round(list_players, list_match)
-print(fonction) 
+##################  Fonction pour trier et classer ###################
 
-#list_player_score = []
+# Récupère la valeur du nom sous forme de liste
+list_score = []
+for k, v in first_round.all_players.items():
+    value = first_round.all_players[k].score
+    list_score.append(value)
 
-for player in first_round.all_players:
 
-    list_player_score.append(first_round.all_players[player].score)
-print("---------->     ", list_player_score)
-print("sorted ----------->    ", sorted(list_player_score))
+# Trie les valeur 
+score_sorted = sorted(list_score, reverse = True)
+print("trier : ", score_sorted)
 
-"""
+# pour retrouver la clef d'une valeur (valeur)
+
+#######
+def find_key(v, dic_players):
+    for k, val in dic_players.items(): 
+        if v == val.score:
+            return k
+
+# Crée une liste trier des clefs
+players_cop = first_round.all_players.copy()
+player_ranked = []
+i = 1
+for score in score_sorted:
+    k = find_key(score, players_cop)
+    first_round.all_players[k].ranking = i
+    player_ranked.append(k)
+    del(players_cop[k])
+    i += 1
+
+
+display_table_tournament(first_round.all_players)
+
+print("joueur classé  -->   ", player_ranked)
+
+fonction = new_round(player_ranked, list_match)
+print(fonction)
