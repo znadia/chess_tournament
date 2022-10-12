@@ -140,29 +140,40 @@ for k, v in first_round.all_players.items():
 
 
 # Trie les valeur 
-trier = sorted(list_vide)
-print("trier : ", trier)
+score_sorted = sorted(list_vide)
+print("trier : ", score_sorted)
 
-# pour retrouver la clef de la valeur (valeur)
-dic_players_cop = first_round.all_players
+# pour retrouver la clef d'une valeur (valeur)
 
-def find_key(v): 
-    for k, val in dic_players_cop.items(): 
+def find_key(v, dic_players):
+    for k, val in dic_players.items(): 
         print ("val  --->  ", v)
-        if v == val.name: 
+        print ("k  --->  ", k)
+        if v == val.name:
             return k
-        del(k)
+
     return "Clé n'existe pas"
 
 
+# Crée une liste trier des clefs
 
+players_cop = first_round.all_players.copy()
 liste_trier = []
-
-for i in trier:
-    k = find_key(i)
+for i in score_sorted:
+    print("iii   :  ", i)
+    k = find_key(i, players_cop)
+    index = score_sorted.index(i)
+    first_round.all_players[k].ranking = index + 1
     liste_trier.append(k)
+    del(players_cop[k])
+
+
 
 print("liste des joueur trier :   ", liste_trier)
+print("toooooouutttt roundd  -----  >   ", first_round.all_players)
+print("toooooouutttt  -----  >   ", dic_all_players )
+
+
 
 """
 def cherch(a):
