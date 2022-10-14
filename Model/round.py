@@ -6,6 +6,7 @@ class Round:
         self.all_players = all_players
         self.all_players_keys = list(all_players.keys())
         self.filtered_players = []
+        self.match_played = []
 
     def __str__(self):
         return f"{self.name}, {self.all_players}, {self.filtered_players}"

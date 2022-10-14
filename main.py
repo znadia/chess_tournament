@@ -94,6 +94,7 @@ name_tournament = list(dic_info_tournament.keys())[0]
 db_file = database.create_db_file(name_tournament)
 
 
+
 ################################################
 
 def what_to_do(dic):
@@ -122,17 +123,19 @@ database.insert_db_info(dic_all_players, db_file)
 
 
 
-first_round = Round(name="premier_round", all_players=dic_all_players)
+#############first_round = Round(name="premier_round", all_players=dic_all_players)
 
 
 
 ################################# TABLEAU JOUEURS ########
 viewclass.display_table_tournament(dic_all_players)
-first_round.display_match()
+
+
+###########first_round.display_match()
 
 
 
-
+"""
 ###################### insert dans la db les premier match de filtered player ####################
 
 dic_filtered = {}
@@ -145,16 +148,62 @@ fonction = dic_round_match(dic_filtered, first_round.name, first_round.filtered_
 
 
 #database.insert_db_round(fonction, db_file)
-
+"""
 
 ################################# TABLEAU MATCHES #############
 
-viewclass.display_table_round(dic_all_players)
+###########viewclass.display_table_round(first_round.filtered_players)
 
 
+############print(first_round.filtered_players)
+
+def display_instance_match(name_match, players_match):
+
+    name_match = Match(name=name_match, players_pair=players_match)
+    return name_match
+
+
+############################### FCT CRÉATION Round ##################################
+
+def create_matches(list_match):
+    for i in range(len(list_match)):
+            players_match = list_match[i]
+            i += 1
+            name_match = "match_" + str(i)
+            match_to_play = Match(name=name_match, players_pair=players_match)
+            match_to_play.add_score_match(dic_all_players)
+            print(match_to_play.__repr__())
+
+#def list_round(nbr_rounds):
+nbr_rounds = dic_info_tournament[name_tournament].nbr_rounds
+list_round = dic_info_tournament[name_tournament].round_played
+
+for nbr in range(nbr_rounds):
+    i = nbr + 1
+    name_round = "round_" + str(i)
+    name_round = Round(name=name_round, all_players=dic_all_players)
+    if i == 1:
+        name_round.display_match()
+        list_match = name_round.filtered_players
+        viewclass.display_table_round(list_match)
+        create_matches(list_match)
+        viewclass.display_table_tournament(dic_all_players)
+
+    
+
+
+
+
+
+
+
+
+    #list_round.append(name_round)
+
+
+"""
+    
 ############################### FCT SCORE ##################################
-
-
 def add_score_match(nom, dic_player):
 
     list_score = [0.0, 0.5, 1.0]
@@ -184,10 +233,6 @@ def add_score_match(nom, dic_player):
     #nom.score_player2 += score_p2
     dic_player[nom.player2].score += score_p2
 
-
-print(first_round.filtered_players)
-
-
 ############################### FCT CRÉATION MATCHES ##################################
 
 
@@ -198,23 +243,33 @@ def display_instance_match(name_match, players_match):
 
 
 ############################### FCT CRÉATION INSTANCES MATCHES ##################################
-list_match = first_round.filtered_players
-list_players = first_round.all_players_keys
 
-for i in range(len(list_match)):
-    matches = list_match[i]
-    i += 1
-    name_match = "match_" + str(i)
-    print(name_match)
-    a = display_instance_match(name_match, matches)
-    add_score_match(a, dic_all_players)
+#list_match = first_round.filtered_players
+#list_players = first_round.all_players_keys
+
+def create_match():
+
+    for i in range(len(list_match)):
+        matches = list_match[i]
+        i += 1
+        name_match = "match_" + str(i)
+        a = display_instance_match(name_match, matches)
+        add_score_match(a, dic_all_players)
+       
+
+
+
+
+
+
+
+
 
 viewclass.display_table_round(list_match)
 
 viewclass.display_table_tournament(dic_all_players)
 
 ####################### création des autres matches ##################################
-
 
 # liste des matches passés
 
@@ -246,9 +301,9 @@ def new_round(list_players, list_match):
             x += 1
     list_match.extend(new_match)
     return new_match
+"""
 
-
-
+"""
 ##################  Fonction pour trier et classer ###################
 
 # Récupère la valeur du nom sous forme de liste
@@ -288,3 +343,4 @@ print("joueur classé  -->   ", player_ranked)
 
 fonction = new_round(player_ranked, list_match)
 print(fonction)
+"""
