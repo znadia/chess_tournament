@@ -24,11 +24,11 @@ def dic_round_match(dic_filtered, name_round, list_filtered_player):
     return dic_filtered
 
 
+
+
+
 def display_db(db):
         print(db.all())
-
-
-
 
 
 def search(db):
@@ -40,9 +40,3 @@ def search(db):
 def update(db):
     # Modifie la db grace a un element
     db.update({'age': 68}, User.name == 'John')
-
-
-def delete(db):
-    # Supprime un element de la db
-    db.remove(User.name == 'Lina')
-

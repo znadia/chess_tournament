@@ -8,12 +8,11 @@ import random
 import re
 import inquirer
 import datetime
-from rich.console import Console
-from rich.table import Table
+from view.view import ViewClass
 
 
+viewclass = ViewClass()
 
-console = Console()
 
 dic_info_tournament = {}
 
@@ -84,7 +83,6 @@ def create_players():
 
     return dic_all_players
 
-#print("fonction dic: ", dic_all_players['joueur_1'].__dict__)
 
 ################################# CRÉATION Nom DataBase ######################################
 
@@ -123,35 +121,16 @@ database.insert_db_info(dic_all_players, db_file)
 
 
 
+
 first_round = Round(name="premier_round", all_players=dic_all_players)
 
 
 
-################################# TABLEAU JOUEURS #####################################
-
-
-def display_table_tournament(players):
-
-    table = Table(show_header=True, header_style="bold magenta")
-    table.add_column("Joueurs")
-    table.add_column("Prénom", style="dim", width=12)
-    table.add_column("Classement")
-    table.add_column("Score")
-
-    for player in players:
-        table.add_row(
-            player,
-            f"{players[player].first_name} {players[player].name}",
-            f"{players[player].ranking}",
-            f"{players[player].score}",
-        )
-
-    console.print(table)
-
-
-display_table_tournament(first_round.all_players)
-
+################################# TABLEAU JOUEURS ########
+viewclass.display_table_tournament(dic_all_players)
 first_round.display_match()
+
+
 
 
 ###################### insert dans la db les premier match de filtered player ####################
@@ -168,21 +147,9 @@ fonction = dic_round_match(dic_filtered, first_round.name, first_round.filtered_
 #database.insert_db_round(fonction, db_file)
 
 
-################################# TABLEAU MATCHES #####################################
+################################# TABLEAU MATCHES #############
 
-
-def display_table_first_round(players):
-
-    table = Table(show_header=True, header_style="bold magenta")
-    table.add_column("Matches")
-
-    for player in players:
-        table.add_row(f"{player[0]} vs {player[1]}")
-
-    console.print(table)
-
-
-display_table_first_round(first_round.filtered_players)
+viewclass.display_table_round(dic_all_players)
 
 
 ############################### FCT SCORE ##################################
@@ -242,9 +209,9 @@ for i in range(len(list_match)):
     a = display_instance_match(name_match, matches)
     add_score_match(a, dic_all_players)
 
-display_table_first_round(list_match)
+viewclass.display_table_round(list_match)
 
-display_table_tournament(first_round.all_players)
+viewclass.display_table_tournament(dic_all_players)
 
 ####################### création des autres matches ##################################
 
@@ -315,7 +282,7 @@ for score in score_sorted:
     i += 1
 
 
-display_table_tournament(first_round.all_players)
+viewclass.display_table_tournament(dic_all_players)
 
 print("joueur classé  -->   ", player_ranked)
 

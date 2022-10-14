@@ -11,6 +11,7 @@ class Tournament:
         self.time_control = time_control
         self.players = players
         self.description = description
+        self.round_played = []
 
     def __str__(self):
         return f"{self.name}, {self.place}, {self.date}, {self.nbr_rounds}, {self.time_control}, {self.players}, {self.description}"
