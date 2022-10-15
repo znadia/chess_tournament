@@ -10,8 +10,10 @@ class Round:
 
     def __str__(self):
         return f"{self.name}, {self.all_players}, {self.filtered_players}"
-
     
+    def __repr__(self):
+        return f"{self.name}, {self.all_players}, {self.filtered_players}"
+
     def display_match(self):
 
         length = len(self.all_players_keys)
