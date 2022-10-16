@@ -254,67 +254,22 @@ for nbr in range(nbr_rounds):
         list_match = name_round.filtered_players
         viewclass.display_table_round(list_match)
         past_matches[name_round] = list_match
-        list_round.append(list_match)
+        list_round.append(list_match) #pour ajouter tout les matchs jouer dico
         get_matches(list_match)
         score_sorted = get_score_sorted(name_round)
         players_ranks = ranking_sorted(name_round, score_sorted)
-        new_match = new_round(players_ranks, list_round)
-        viewclass.display_table_round(new_match)
+        #new_match = new_round(players_ranks, list_round)
+        #viewclass.display_table_round(new_match)
         viewclass.display_table_tournament(dic_all_players)
         
-
-
-
-"""
-    #list_round.append(name_round)
-    
-
-viewclass.display_table_round(list_match)
-
-viewclass.display_table_tournament(dic_all_players)
-
-####################### création des autres matches ##################################
-
-# liste des matches passés
-
-###############
-def check_match(list_match, player_1, player_2):
-    sorted_player = tuple(sorted([player_1, player_2]))
-    if sorted_player in list_match:
-        return False
-    else:
-        return sorted_player
-
-
-def new_round(list_players, list_match):
-
-    list_players_cop = list_players.copy()
-    new_match = []
-    i = 0
-    x = 1
-    while i < len(list_players_cop):
-        while x < len(list_players_cop):
-            if list_players_cop[i] != list_players_cop[x]:
-                ret = check_match(list_match, list_players_cop[i], list_players_cop[x])
-                if ret != False:
-                    new_match.append(ret)
-                    del list_players_cop[x]
-                    del list_players_cop[i]
-                    x = 0
-                    i = 0
-            x += 1
-    list_match.extend(new_match)
-    return new_match
-
-
-
-
-
-viewclass.display_table_tournament(dic_all_players)
-
-print("joueur classé  -->   ", player_ranked)
-
-fonction = new_round(player_ranked, list_match)
-print(fonction)
-
-"""
+    list_match = new_round(players_ranks, list_round)
+    viewclass.display_table_round(list_match)
+    past_matches[name_round] = list_match
+    list_round.append(list_match)
+    get_matches(list_match)
+    score_sorted = get_score_sorted(name_round)
+    players_ranks = ranking_sorted(name_round, score_sorted)
+    new_match = new_round(players_ranks, list_round)
+    viewclass.display_table_round(new_match)
+    viewclass.display_table_tournament(dic_all_players)
+     
