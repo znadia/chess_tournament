@@ -1,24 +1,23 @@
 from model.tournament import Tournament
 from model.player import Player
 from model.round import Round
-from model.match import Match
+import controller.utils
+import controller.info 
 import database
 import json
 import random
-import re
 import inquirer
-import datetime
 from view.view import ViewClass
 
 
+info = controller.info
+utils = controller.utils
 viewclass = ViewClass()
-
-
 dic_info_tournament = {}
-
 dic_all_players = {}
 
-################################################
+
+
 questions = [
     inquirer.List(
         "size",
@@ -34,36 +33,25 @@ if answers["size"] == "Quitter":
     print("Au revoir")
     quit()
 
+
 ################################# FCT Création tournoie #####################################
 
 
 def create_info_tournament():
 
-    t_name = input("Nom du tournoi: ")
-    t_place = input("Lieu du tournoi: ")
-    t_date = input("Date du tournoi: ")
-    t_time_control = input("Controle du temps ")
-    t_players = create_players()
-    t_description = input("Description du tournoi ")
-    t = Tournament(t_name, t_place, t_date, t_time_control, t_description)
-    dic_info_tournament[t_name] = t
+    name = input("Nom du tournoi: ")
+    place = input("Lieu du tournoi: ")
+    date = input("Date du tournoi: ")
+    time_control = info.check_time_control()
+    players = create_players()
+    nbr_rounds = info.check_nbr_round()
+    description = input("Description du tournoi ")
+    t = Tournament(name, place, date, time_control, nbr_rounds, description)
+    dic_info_tournament[name] = t
 
 
     return dic_info_tournament
 
-
-############################# FCT REGEX DATE DE NAISSANCE ###################################
-
-
-def int_date_birthday():
-
-    regex = re.compile(r"^[0-9]{2}/[0-9]{2}/[0-9]{4}$")
-    result = input("votre date de naissance jj/mm/aaaa: ")
-
-    while not re.findall(regex, result):
-        result = input("Veuillez entrer une date de naissance valide: ")
-
-    return result
 
 
 ################################# FCT CRÉATION JOUEURS ######################################
@@ -72,10 +60,11 @@ def int_date_birthday():
 def create_players():
 
     for i in range(1, 9):
-        p_name = input("ton nom: ")
-        p_first_name = input("ton prénom: ")
-        # p_d_o_b = int_date_birthday()
-        p_d_o_b = input("date de naissance: ")
+        p_name = input("Nom: ")
+        p_first_name = input("Prénom: ")
+        # p_d_o_b = info.int_date_birthday()
+        p_d_o_b = input("Date de naissance: ")
+        #p_sex = info.check_sex()
         p_sex = input("Homme ou Femme: ")
         p = Player(p_name, p_first_name, p_d_o_b, p_sex)
         dic_all_players["joueur_" + str(i)] = p
@@ -86,7 +75,6 @@ def create_players():
 
 ################################# CRÉATION Nom DataBase ######################################
 
-
 create_info_tournament()
 
 name_tournament = list(dic_info_tournament.keys())[0]
@@ -94,10 +82,9 @@ name_tournament = list(dic_info_tournament.keys())[0]
 db_file = database.create_db_file(name_tournament)
 
 
-
 ################################################
 
-def what_to_do(dic):
+def display_menu(dic):
 
     questions = [
         
@@ -117,22 +104,11 @@ def what_to_do(dic):
         quit()
 
 
-what_to_do(dic_info_tournament)
+display_menu(dic_info_tournament)
 database.insert_db_info(dic_all_players, db_file)
 
 
-
-
-#############first_round = Round(name="premier_round", all_players=dic_all_players)
-
-
-
-################################# TABLEAU JOUEURS ########
 viewclass.display_table_tournament(dic_all_players)
-
-
-###########first_round.display_match()
-
 
 
 """
@@ -150,100 +126,11 @@ fonction = dic_round_match(dic_filtered, first_round.name, first_round.filtered_
 #database.insert_db_round(fonction, db_file)
 """
 
-############################### FCT CRÉATION Round ##################################
-
-def get_matches(list_match):
-    for i in range(len(list_match)):
-            players_match = list_match[i]
-            i += 1
-            name_match = "match_" + str(i)
-            match_to_play = Match(name=name_match, players_pair=players_match)
-            match_to_play.add_score_match(dic_all_players)
-            print(match_to_play.__repr__())
-
-##################  Fonction pour trier et classer ###################
-
-# Récupère la score du nom sous forme de liste
-def get_score_sorted(name_round):
-    list_score = []
-    for k, v in name_round.all_players.items():
-        value = name_round.all_players[k].score
-        list_score.append(value)
-    sort_list = sorted(list_score, reverse = True)
-    return sort_list
-
-"""
-# Trie les valeur 
-score_sorted = sorted(list_score, reverse = True)
-print("trier : ", score_sorted)
-"""
-
-
-
-# pour retrouver la clef d'une valeur (valeur)
-
-#######
-def find_key(v, dic_players):
-    for k, val in dic_players.items(): 
-        if v == val.score:
-            return k
-
-# Crée une liste trier des clefs
-def ranking_sorted(name_round, score_sorted):
-    players_cop = name_round.all_players.copy()
-    player_ranked = []
-    i = 1
-    for score in score_sorted:
-        k = find_key(score, players_cop)
-        name_round.all_players[k].ranking = i
-        player_ranked.append(k)
-        del(players_cop[k])
-        i += 1
-    return player_ranked
-
-
-
-####################### création des autres matches ##################################
-
-# liste des matches passés
-
-###############
-def check_match(list_match, player_1, player_2):
-    sorted_player = tuple(sorted([player_1, player_2]))
-    if sorted_player in list_match:
-        return False
-    else:
-        return sorted_player
-
-
-def new_round(list_players, list_match):
-
-    list_players_cop = list_players.copy()
-    new_match = []
-    i = 0
-    x = 1
-    while i < len(list_players_cop):
-        while x < len(list_players_cop):
-            if list_players_cop[i] != list_players_cop[x]:
-                ret = check_match(list_match, list_players_cop[i], list_players_cop[x])
-                if ret != False:
-                    new_match.append(ret)
-                    del list_players_cop[x]
-                    del list_players_cop[i]
-                    x = 0
-                    i = 0
-            x += 1
-    list_match.extend(new_match)
-    return new_match
-
-
 #############################################################################################################################################
 
-
-
 nbr_rounds = dic_info_tournament[name_tournament].nbr_rounds
-list_round = dic_info_tournament[name_tournament].round_played
-past_matches = dic_info_tournament[name_tournament].dic_rounds
+list_match_played = dic_info_tournament[name_tournament].round_played
+dic_rounds = dic_info_tournament[name_tournament].dic_rounds
 
 for nbr in range(nbr_rounds):
     i = nbr + 1
@@ -251,25 +138,40 @@ for nbr in range(nbr_rounds):
     name_round = Round(name=name_round, all_players=dic_all_players)
     if i == 1:
         name_round.display_match()
-        list_match = name_round.filtered_players
-        viewclass.display_table_round(list_match)
-        past_matches[name_round] = list_match
-        list_round.append(list_match) #pour ajouter tout les matchs jouer dico
-        get_matches(list_match)
-        score_sorted = get_score_sorted(name_round)
-        players_ranks = ranking_sorted(name_round, score_sorted)
-        #new_match = new_round(players_ranks, list_round)
-        #viewclass.display_table_round(new_match)
+        list_new_match = name_round.filtered_players
+        viewclass.display_table_round(list_new_match, name_round.name)
+        #print("ii ===  ", i)
+        dic_rounds[name_round] = list_new_match
+        list_match_played.append(list_new_match) 
+        utils.get_matches(list_new_match, dic_all_players)
+        score_sorted = utils.get_score_sorted(name_round)
+        players_ranks = utils.create_ranking(name_round, score_sorted)
+        print("player_ranks    ::   ", players_ranks)
         viewclass.display_table_tournament(dic_all_players)
-        
-    list_match = new_round(players_ranks, list_round)
-    viewclass.display_table_round(list_match)
-    past_matches[name_round] = list_match
-    list_round.append(list_match)
-    get_matches(list_match)
-    score_sorted = get_score_sorted(name_round)
-    players_ranks = ranking_sorted(name_round, score_sorted)
-    new_match = new_round(players_ranks, list_round)
-    viewclass.display_table_round(new_match)
-    viewclass.display_table_tournament(dic_all_players)
-     
+    if i >= 2:
+        #print("\n")
+        #print("La liste des rounds    >>   ", list_match_played)
+        #print("\n")
+        #print("Le dictionnaire des rounds    >>   ", dic_rounds)
+        list_new_match = utils.new_round(players_ranks, list_match_played)
+        viewclass.display_table_round(list_new_match, name_round.name)
+        #print("iiiiiii ===  ", i)
+        dic_rounds[name_round] = list_new_match
+        list_match_played.append(list_new_match)
+        utils.get_matches(list_new_match, dic_all_players)
+        score_sorted = utils.get_score_sorted(name_round)
+        players_ranks = utils.create_ranking(name_round, score_sorted)
+        viewclass.display_table_tournament(dic_all_players)
+
+
+print("\n")
+print("Le gagnant est  :  ", players_ranks[0])
+print("\n")
+print("#################### FIN ############### ")
+print("\n")
+print("La liste des rounds    >>   ", list_match_played)
+print("\n")
+print("Le dictionnaire des rounds    >>   ", dic_rounds)
+print("\n")
+
+

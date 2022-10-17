@@ -14,6 +14,7 @@ class ViewClass:
         table.add_column("Classement")
         table.add_column("Score")
 
+    
         for player in players:
             table.add_row(
                 player,
@@ -24,10 +25,10 @@ class ViewClass:
         console.print(table)
 
 
-    def display_table_round(self, players):
+    def display_table_round(self, players, name_of_round):
 
         table = Table(show_header=True, header_style="bold magenta")
-        table.add_column("Matches")
+        table.add_column(name_of_round)
 
         for player in players:
             table.add_row(f"{player[0]} vs {player[1]}")

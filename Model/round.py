@@ -1,18 +1,20 @@
 class Round:
     
-    def __init__(self, name, all_players):
+    def __init__(self, name, all_players, start_time=None, end_time=None):
 
         self.name = name
         self.all_players = all_players
         self.all_players_keys = list(all_players.keys())
         self.filtered_players = []
         self.match_played = []
+        self.start_time = start_time
+        self.end_time = end_time
 
     def __str__(self):
-        return f"{self.name}, {self.all_players}, {self.filtered_players}"
+        return f"{self.name}, {self.all_players}"
     
     def __repr__(self):
-        return f"{self.name}, {self.all_players}, {self.filtered_players}"
+        return f"///  {self.name} ///"
 
     def display_match(self):
 
@@ -25,4 +27,6 @@ class Round:
         for a,b in zip(first_half,second_half):
             self.filtered_players.append((a,b))
 
+    
+ 
     
