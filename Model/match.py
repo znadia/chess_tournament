@@ -42,4 +42,8 @@ class Match:
         self.score_player2 = score_p2
         dic_player[self.player2].score += score_p2
 
+    def return_match(self):
+        return ([self.name,([self.player1, self.score_player1],[self.player2, self.score_player2])])
+
+
 

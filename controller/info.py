@@ -13,8 +13,9 @@ def check_nbr_round():
     nbr = input("nombre de round: ")
 
     if not nbr:
+        nbr = 4
         print("Le nombre de round sera de 4 par defaut")
-        return nbr
+    return nbr
 
     while not nbr.isnumeric() == True:
         nbr = input("Veuillez le nombre de round: ")

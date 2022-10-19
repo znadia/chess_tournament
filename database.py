@@ -25,8 +25,6 @@ def dic_round_match(dic_filtered, name_round, list_filtered_player):
 
 
 
-
-
 def display_db(db):
         print(db.all())
 

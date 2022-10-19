@@ -35,7 +35,8 @@ def create_info_tournament():
     name = input("Nom du tournoi: ")
     place = input("Lieu du tournoi: ")
     date = input("Date du tournoi: ")
-    time_control = info.check_time_control()
+    #time_control = info.check_time_control()
+    time_control = input("controle du temps: ")
     create_players()
     nbr_rounds = info.check_nbr_round()
     desc = input("Description du tournoi ")
@@ -50,8 +51,10 @@ def create_players():
     for i in range(1, 9):
         p_name = input("Nom: ")
         p_first_name = input("Prénom: ")
-        p_d_o_b = info.int_date_birthday()
-        p_sex = info.check_sex()
+        #p_d_o_b = info.int_date_birthday()
+        p_d_o_b = input("date de naissance: ")
+        p_sex =  input("Homme ou Femme: ")
+        #p_sex = info.check_sex()
         p = Player(p_name, p_first_name, p_d_o_b, p_sex)
         dic_all_players["joueur_" + str(i)] = p
 
@@ -89,32 +92,38 @@ database.insert_db_info(dic_all_players, db_file)
 viewclass.display_table_tournament(dic_all_players)
 
 nbr_rounds = int(dic_info_tournament[name_tournament].nbr_rounds)
-list_match_played = dic_info_tournament[name_tournament].round_played
+list_round = dic_info_tournament[name_tournament].round_played
 
 for nbr in range(nbr_rounds):
     i = nbr + 1
     name_round = "round_" + str(i)
     name_round = Round(name=name_round, all_players=dic_all_players)
     if i == 1:
+        viewclass.display_time("start_time", name_round)
         name_round.display_match()
         list_new_match = name_round.filtered_players
-        viewclass.display_table_round(list_new_match, name_round.name)
+        viewclass.display_table_round(list_new_match, name_round)
         matches = name_round.match_played
         utils.get_matches(list_new_match, dic_all_players, matches)
-        list_match_played.append(matches)
         score_sorted = utils.get_score_sorted(name_round)
         players_ranks = utils.create_ranking(name_round, score_sorted)
+        list_round.append(name_round)
+        print("list_round >>>>>    ", list_round)
+        viewclass.display_time("end_time", name_round)
         viewclass.display_table_tournament(dic_all_players)
-
+"""
     if i >= 2:
-        list_new_match = utils.new_round(players_ranks, list_match_played)
-        viewclass.display_table_round(list_new_match, name_round.name)
+        viewclass.display_time("start_time", name_round)
+        list_new_match = utils.new_round(players_ranks, list_round)
+        viewclass.display_table_round(list_new_match, name_round)
         matches = name_round.match_played
         utils.get_matches(list_new_match, dic_all_players, matches)
-        list_match_played.append(matches)
+        list_round.append(matches)
         score_sorted = utils.get_score_sorted(name_round)
         players_ranks = utils.create_ranking(name_round, score_sorted)
+        viewclass.display_time("end_time", name_round)
         viewclass.display_table_tournament(dic_all_players)
 
 print("\n")
 print("Le gagnant est  :  ", players_ranks[0])
+"""
