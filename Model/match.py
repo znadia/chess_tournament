@@ -8,11 +8,10 @@ class Match:
         self.list_score = [0.0, 0.5, 1.0]
 
     def __str__(self):
-        return f"{self.name}, player1: {self.player1}, score_p1:"
-        f" {self.score_player1}, player2: {self.player2}, score_p2: {self.score_player2}"
+        return f"{self.name}"
 
     def __repr__(self):
-        return ([self.name, [self.player1, self.score_player1],[self.player2, self.score_player2]])
+        return f"{self.name}"
 
     def add_score_match(self, dic_player):
 
@@ -20,7 +19,7 @@ class Match:
         score_p2 = ""
 
         while score_p1 not in self.list_score:
-            score_p1 = input("Veuillez entrer le score du " + self.player1 + ": ")
+            score_p1 = input("Score du " + self.player1 + ": ")
             score_p1 = float(score_p1)
 
         self.score_player1 = score_p1
@@ -36,14 +35,21 @@ class Match:
             self.list_score = [0.0]
 
         while score_p2 not in self.list_score:
-            score_p2 = input("Veuillez entrer le score du " + self.player2 + ": ")
+            score_p2 = input("Score du " + self.player2 + ": ")
             score_p2 = float(score_p2)
 
         self.score_player2 = score_p2
         dic_player[self.player2].score += score_p2
 
-    def return_match(self):
-        return ([self.name,([self.player1, self.score_player1],[self.player2, self.score_player2])])
+        print(self.return_dic_match())
+        print("\n")
 
-
-
+    def return_dic_match(self):
+        return {
+                "name_match": self.name,
+                "match_played":
+                    (
+                        [self.player1, self.score_player1],
+                        [self.player2, self.score_player2]
+                    )
+                }

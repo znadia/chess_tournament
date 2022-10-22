@@ -1,12 +1,7 @@
 from model.match import Match
-"""
-from datetime import datetime
 
-def get_times():
-    # Affiche l'heure
-    return datetime.now().strftime("%m/%d/%Y, %H:%M:%S")[:-3]
-"""
-def get_matches(list_match, dic_all_players, match_played):
+
+def get_matches(list_match, dic_all_players, match):
     # Crée une instance match et ajoute le score
     
     for i in range(len(list_match)):
@@ -15,10 +10,8 @@ def get_matches(list_match, dic_all_players, match_played):
             name_match = "match_" + str(i)
             match_to_play = Match(name=name_match, players_pair=players_match)
             match_to_play.add_score_match(dic_all_players)
-            (match_to_play.__repr__())
-            match_played.append(match_to_play.return_match())
+            match.append(match_to_play.return_dic_match())
 
-        
 
 def get_score_sorted(name_round):
     # Récupère le score du joueur sous forme de liste
@@ -79,4 +72,3 @@ def new_round(list_players, list_match):
             x += 1
     list_match.extend(new_match)
     return new_match
-

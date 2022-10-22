@@ -40,3 +40,20 @@ def check_sex():
         check_sex = input("Veuillez entrer H nou F: ")
     return check_sex
 
+def check_players(dic_players):
+    list_data = []
+
+    for key, var in dic_players.items():
+        a = {key : var.return_players()}
+        list_data.append(a)
+    return list_data
+
+
+def sorted_players(dic_players, players_ranks):
+    dic_sorted = {}
+
+    for key in players_ranks:
+        dic_sorted[key] = dic_players[key]
+
+    return dic_sorted
+

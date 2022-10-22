@@ -1,5 +1,4 @@
 import json
-
 class Player:
 
     def __init__(self, name, first_name, d_o_b, sex):    
@@ -11,8 +10,19 @@ class Player:
         self.ranking = 0
 
     def __str__(self):
-        return f"{self.name}, {self.first_name}, {self.d_o_b}, {self.sex}, {self.score}, {self.ranking}"
+        return f"nameess:{self.name}, {self.first_name}, {self.d_o_b}, {self.sex}, {self.score}, {self.ranking}"
 
-    #def __repr__(self):
-        #return f"namesssss: {self.name}, first_name: {self.first_name}, d_o_b: {self.d_o_b}, sex: {self.sex}, score: {self.score}, classement: {self.ranking}"
+    def __repr__(self):
+        return f"namesssss: {self.name}, first_name: {self.first_name}, d_o_b: {self.d_o_b}, sex: {self.sex}, score: {self.score}, classement: {self.ranking}"
         #return self.name
+
+    
+    def return_players(self):
+        return {
+                    "name": self.name,
+                    "first_name": self.first_name,
+                    "d_o_b": self.d_o_b,
+                    "sex": self.sex,
+                    "score": self.score,
+                    "ranking": self.ranking
+                }
