@@ -16,25 +16,13 @@ def insert_db_info(dic_obj, db):
                 db.insert(entry)
 
 
-def insert_db_round(list_match, db):
-        db.insert(list_match)
+def insert_db_round(dic_obj, db):
+        db.insert(dic_obj)
 
-def dic_round_match(dic_filtered, name_round, list_filtered_player):
-    dic_filtered[name_round] = list_filtered_player
-    return dic_filtered
-
+def add_data(dic_obj, db):
+    db.truncate()
+    insert_db_info(dic_obj, db)
 
 
 def display_db(db):
         print(db.all())
-
-
-def search(db):
-    # Recherche un element dans la db
-    result = db.search(User.name == 'John')
-    print(result)
-
-
-def update(db):
-    # Modifie la db grace a un element
-    db.update({'age': 68}, User.name == 'John')
