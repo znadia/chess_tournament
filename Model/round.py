@@ -44,3 +44,13 @@ class Round:
                 "start_time": self.start_time,
                 "end_time": self.end_time
                 }
+
+    """            
+    def desrialize_round(self, name_round, matches, start_time, end_time ):
+         return {
+                "name_round": self.name,
+                "matches": self.matches,
+                "start_time": self.start_time,
+                "end_time": self.end_time
+                }
+    """

@@ -5,6 +5,7 @@ User = Query()
 
 def create_db_file(name_file):
     db = TinyDB('db_' + name_file + '.json')
+    print("nom du fichier", db)
     return db
 
 
@@ -16,13 +17,13 @@ def insert_db_info(dic_obj, db):
                 db.insert(entry)
 
 
-def insert_db_round(dic_obj, db):
-        db.insert(dic_obj)
-
 def add_data(dic_obj, db):
     db.truncate()
     insert_db_info(dic_obj, db)
 
 
-def display_db(db):
-        print(db.all())
+def open_db(name_file):
+         with open('db_' + name_file + '.json') as json_file:
+                data = json.load(json_file)
+                return data['_default']['1']
+
