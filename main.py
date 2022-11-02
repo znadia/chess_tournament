@@ -66,23 +66,25 @@ def deserialize_players(dic_file, dic_players, name_file):
         dic_players[key] = pl
     return dic_players
 
-
+"""
 def deserialize_round(dic_file, name_file):
     list_round = []
 
     for i in dic_file[name_file].get('rounds'):
         list_round.append(i)
-    return list_round  ############################# [0]
+    return list_round  
+"""
 
-
-
-def deserialize_tournement(dic_info, name_file, obj_pl, obj_mt, obj_rd):
+def deserialize_tournement(dic_info, name_file, obj_pl):
 
     x = []
+    lst_r = dic_info[name_file].get('rounds')
+    lst_m = dic_info[name_file].get('pairs_matched')
     for v in dic_info[name_file].values():
         x.append(v)
-    t = Tournament(x[0], x[1], x[2], x[3], x[4], obj_pl, obj_mt, x[7], obj_rd)
+    t = Tournament(x[0], x[1], x[2], x[3], x[4], obj_pl, lst_m, x[7], lst_r)
     dic_info[name_file] = t
+
     return dic_info
 
 
@@ -104,7 +106,8 @@ for nbr in range(int(dic_info[name_file].nbr_rounds)):
     if i == 1:
         viewtable.display_start_time(name_round)
         name_round.first_round()
-        pairs_matched = name_round.first_round()
+        pairs_matched.extend(name_round.first_round())
+        print("pairs_match 108    = ", dic_info[name_file].pairs_matched)
         viewtable.display_table_round(pairs_matched, name_round)
         matches = name_round.matches
         utils.get_matches(pairs_matched, dic_players, matches)
@@ -112,25 +115,28 @@ for nbr in range(int(dic_info[name_file].nbr_rounds)):
         players_ranks = utils.create_ranking(name_round, score_sorted)
         dic_info[name_file].rounds.append(name_round.return_dic_round())
         viewtable.display_end_time(name_round)
+        print("117    ", dic_info[name_file].players)
         dic_info[name_file].players = info.check_players(dic_players)
+        print("119    ", dic_info[name_file].players)
         dic_rank = info.sorted_players(dic_players, players_ranks)
         viewtable.display_table_tournament(dic_rank)
         #viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, name_file)
-        print("dic info 11 >>>  ", dic_info[name_file].players)
+        ###############################################################
         print("nbr de round  ", int(dic_info[name_file].nbr_rounds))
         dic_info = viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, "lola")
         name_file = 'lola'
         print("dic info autre fichier >>>  ", dic_info[name_file])
-        b = deserialize_players(dic_info, dic_players, name_file)
-        deserialize_tournement(dic_info, name_file, b, None, None)
-        print("lloooppppp ", dic_info[name_file].name)
-        print("tttttt ", dic_info[name_file].players)
-
+        p = deserialize_players(dic_info, dic_players, name_file)
+        deserialize_tournement(dic_info, name_file, p)
+        print("######################### \n", dic_info[name_file])
+        
 
     if i >= 2:
 
         viewtable.display_start_time(name_round)
+        pairs_matched = dic_info[name_file].pairs_matched
         list_new_match = utils.new_round(players_ranks, pairs_matched)
+        print("pairs_match dic 138    = ",  dic_info[name_file].pairs_matched)
         viewtable.display_table_round(list_new_match, name_round)
         matches = name_round.matches
         utils.get_matches(list_new_match, dic_players, matches)
@@ -144,10 +150,11 @@ for nbr in range(int(dic_info[name_file].nbr_rounds)):
         print("lloooppppp 2222 ", dic_info[name_file].name)
         print("tttttt 222222  ", dic_info[name_file].players)
         #viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, name_file)
+        ##################################################################
         dic_info = viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, "lola")
         name_file = 'lola'
         print("dic info autre fichier >>>  ", dic_info[name_file])
-        dic_info[name_file].players = info.check_players(dic_players)
+        #dic_info[name_file].players = info.check_players(dic_players)
 
 print("\n")
 print("Le gagnant est  :  ", players_ranks[0])
