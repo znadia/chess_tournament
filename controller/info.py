@@ -47,13 +47,3 @@ def check_players(dic_players):
         a = {key : var.return_players()}
         list_data.append(a)
     return list_data
-
-
-def sorted_players(dic_players, players_ranks):
-    dic_sorted = {}
-
-    for key in players_ranks:
-        dic_sorted[key] = dic_players[key]
-
-    return dic_sorted
-

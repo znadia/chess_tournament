@@ -57,14 +57,17 @@ print("55   ", dic_info[name_file].players)
 
 def deserialize_players(dic_file, dic_players, name_file):
     dic_players.clear()
-    for players in (dic_file[name_file].get('players')):
+    for players in dic_file[name_file].get('players'):
         for key, value in players.items():
             p = []
             for v in value.values():
                 p.append(v)
         pl = Player(p[0], p[1], p[2], p[3], p[4], p[5])
         dic_players[key] = pl
+
     return dic_players
+
+
 
 """
 def deserialize_round(dic_file, name_file):
@@ -104,57 +107,77 @@ for nbr in range(int(dic_info[name_file].nbr_rounds)):
     name_round = "round_" + str(i)
     name_round = Round(name=name_round, all_players=dic_players)
     if i == 1:
-        viewtable.display_start_time(name_round)
+        # Déroulement d'un Round/Matches
+        viewtable.display_start_time(name_round)####
         name_round.first_round()
-        pairs_matched.extend(name_round.first_round())
-        print("pairs_match 108    = ", dic_info[name_file].pairs_matched)
+        pairs_matched.extend(name_round.first_round()) # Pairs_match = [['joueur_1', 'joueur_5'], ['joueur_2', 'joueur_6'], ['joueur_3', 'joueur_7'], ['joueur_4', 'joueur_8']]
         viewtable.display_table_round(pairs_matched, name_round)
-        matches = name_round.matches
-        utils.get_matches(pairs_matched, dic_players, matches)
-        score_sorted = utils.get_score_sorted(name_round)
-        players_ranks = utils.create_ranking(name_round, score_sorted)
-        dic_info[name_file].rounds.append(name_round.return_dic_round())
-        viewtable.display_end_time(name_round)
-        print("117    ", dic_info[name_file].players)
+        utils.get_matches(pairs_matched, dic_players, name_round.matches) #Crée le match et le score 
+        viewtable.display_end_time(name_round)#####
+        dic_info[name_file].rounds.append(name_round.return_dic_round())#Enregistre le round dans dic_info
+
+
+
+
         dic_info[name_file].players = info.check_players(dic_players)
         print("119    ", dic_info[name_file].players)
-        dic_rank = info.sorted_players(dic_players, players_ranks)
-        viewtable.display_table_tournament(dic_rank)
+        #players_ranks = utils.create_ranking(name_round)  ####   ['joueur_3', 'joueur_5', 'joueur_8', 'joueur_2', 'joueur_6', 'joueur_1', 'joueur_4', 'joueur_7']
+        #dic_rank = utils.sorted_players(dic_players, players_ranks)
+        dic_rank = {}
+        viewtable.display_table_tournament(dic_players)
+        print("player 1 131 ===  ", dic_info[name_file].players)
         #viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, name_file)
         ###############################################################
-        print("nbr de round  ", int(dic_info[name_file].nbr_rounds))
+        
+        
         dic_info = viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, "lola")
         name_file = 'lola'
-        print("dic info autre fichier >>>  ", dic_info[name_file])
+        db_file = viewmenu.create_name_file(name_file)
+        print("143  ===  ", dic_info[name_file])
+        
         p = deserialize_players(dic_info, dic_players, name_file)
         deserialize_tournement(dic_info, name_file, p)
         print("######################### \n", dic_info[name_file])
-        
-
+        print("player 1 ===  ", dic_players)
+    
     if i >= 2:
-
-        viewtable.display_start_time(name_round)
+        players_ranks = utils.create_ranking(name_round)  ####   ['joueur_3', 'joueur_5', 'joueur_8', 'joueur_2', 'joueur_6', 'joueur_1', 'joueur_4', 'joueur_7']
+        print("playe rank 142 =====   ", players_ranks)
+        #dic_rank = utils.sorted_players(dic_players, players_ranks)
+        dic_rank = {} ############
+        viewtable.display_start_time(name_round) ####
         pairs_matched = dic_info[name_file].pairs_matched
-        list_new_match = utils.new_round(players_ranks, pairs_matched)
+        list_new_match = utils.new_round(players_ranks, pairs_matched) #Créer le nouveau match
         print("pairs_match dic 138    = ",  dic_info[name_file].pairs_matched)
         viewtable.display_table_round(list_new_match, name_round)
-        matches = name_round.matches
-        utils.get_matches(list_new_match, dic_players, matches)
+        
+        utils.get_matches(list_new_match, dic_players, name_round.matches)
+        viewtable.display_end_time(name_round)#####
         dic_info[name_file].rounds.append(name_round.return_dic_round())
-        score_sorted = utils.get_score_sorted(name_round)
-        players_ranks = utils.create_ranking(name_round, score_sorted)
-        viewtable.display_end_time(name_round)
-        dic_rank = info.sorted_players(dic_players, players_ranks)
+        print("156 ===== ", dic_info[name_file])
+    
+
+
+        #players_ranks = utils.create_ranking(name_round)
+
+        #dic_rank = utils.sorted_players(dic_players, players_ranks)
         viewtable.display_table_tournament(dic_rank)
+
+
+        dic_info[name_file].players = info.check_players(dic_players)
+
+        #  
         print("nbr de round  ", int(dic_info[name_file].nbr_rounds))
         print("lloooppppp 2222 ", dic_info[name_file].name)
         print("tttttt 222222  ", dic_info[name_file].players)
-        #viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, name_file)
+        viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, name_file)
         ##################################################################
-        dic_info = viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, "lola")
-        name_file = 'lola'
-        print("dic info autre fichier >>>  ", dic_info[name_file])
-        #dic_info[name_file].players = info.check_players(dic_players)
+        print("name_file == ", name_file)
+
+    #viewmenu.display_menu_all(dic_info, dic_players, dic_rank, db_file, name_file)
+       
+  
+
 
 print("\n")
 print("Le gagnant est  :  ", players_ranks[0])

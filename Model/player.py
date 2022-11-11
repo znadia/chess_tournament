@@ -6,7 +6,7 @@ class Player:
         self.first_name = first_name
         self.d_o_b = d_o_b
         self.sex = sex
-        self.score = score
+        self.score = float(score)
         self.ranking = ranking
 
     def __str__(self):

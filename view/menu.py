@@ -90,13 +90,13 @@ class ViewMenu:
 
         if answers["size"] == "Sauvegarder les informations":
             database.add_data(tournement, db)
+            print("L'enregistrement a été effectué avec succès.")
           
         if answers["size"] == "Visualiser les rapport":
             self.display_report(tournement, player, rank, db)
         
         if answers["size"] == "Reprendre un tournoi":
             return database.open_db(name_file)
-            #database.open_db(name_file)
 
 
         if answers["size"] == "Quitter":

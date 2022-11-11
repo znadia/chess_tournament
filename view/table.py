@@ -17,7 +17,7 @@ class ViewTable:
             table.add_row(
                 player,
                 f"{players[player].first_name} {players[player].name}",
-                f"{players[player].ranking}",
+                f"{0}",
                 f"{players[player].score}",
             )
         console.print(table)
