@@ -1,5 +1,6 @@
 import database
 import inquirer
+import os
 
 class ViewMenu:
 
@@ -26,6 +27,8 @@ class ViewMenu:
 #########################################################################################
 
     def display_report(self, dic_tournement, player, rank, db):
+        
+        name_file = list(dic_tournement.keys())[0]
 
         questions = [
             inquirer.List(
@@ -47,14 +50,17 @@ class ViewMenu:
             answers = inquirer.prompt(questions)
 
             if answers["size"] == "Par ordre alphabétique":
-                print(player)
+                print(dic_tournement[name_file].players)
         
             if answers["size"] == "Par classement":
-                print(rank)
+                print(dic_tournement[name_file].players)
     
         
         if answers["size"] == "Rounds/Matches":
-            print(round)
+            print(dic_tournement[name_file].rounds)
+
+        self.display_menu_all(dic_tournement, player, rank, db)
+
     
 #########################################################################################
 
@@ -76,9 +82,28 @@ class ViewMenu:
             print("Au revoir")
             quit()
 
+
+    def display_tournement(self):
+        db = []
+        for file in os.listdir("data/"):
+            db.append(file)
+
+        questions = [
+            inquirer.List(
+                "size",
+                message="Quel tournois voulez-vous reprendre ?",
+                choices=db,
+            ),
+        ]
+        answers = inquirer.prompt(questions)
+
+        return database.open_db(answers['size'])
+
+
+
 #########################################################################################
 
-    def display_menu_all(self, tournement, player, rank, db, name_file):
+    def display_menu_all(self, dic_tournement, player, rank, db):
         questions = [
             inquirer.List(
                 "size",
@@ -89,17 +114,20 @@ class ViewMenu:
         answers = inquirer.prompt(questions)
 
         if answers["size"] == "Sauvegarder les informations":
-            database.add_data(tournement, db)
+            database.add_data(dic_tournement, db)
             print("L'enregistrement a été effectué avec succès.")
+            self.display_menu_all(dic_tournement, player, rank, db)
           
         if answers["size"] == "Visualiser les rapport":
-            self.display_report(tournement, player, rank, db)
+            self.display_report(dic_tournement, player, rank, db)
         
         if answers["size"] == "Reprendre un tournoi":
-            return database.open_db(name_file)
+            return self.display_tournement(), True
 
 
         if answers["size"] == "Quitter":
             print("Au revoir")
             quit()
+
+        return dic_tournement, None
 

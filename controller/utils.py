@@ -18,6 +18,7 @@ def list_score_sorted(name_round):
     list_score = []
     for k in name_round.all_players.keys():
         value = name_round.all_players[k].score
+        print("**************   ", value)
         list_score.append(value)
     sort_list = sorted(list_score, reverse = True)
     return sort_list
@@ -34,17 +35,19 @@ def find_key(v, dic_players):
 def create_ranking(name_round):
 
     score_sorted = list_score_sorted(name_round)
+    print('list_scor_sorted    ========   ', score_sorted)
     # Crée une liste trier des clefs 
     players_cop = name_round.all_players.copy()
     player_ranked = []
-    i = 1
+    #i = 1
     for score in score_sorted:
         k = find_key(score, players_cop)
         #name_round.all_players[k].ranking = i
         player_ranked.append(k)
         del(players_cop[k])
-        i += 1
+        #i += 1
     return player_ranked
+
 
 def sorted_players(dic_players, list_players):
     # Crée un dictionnaire trié des joueurs 
