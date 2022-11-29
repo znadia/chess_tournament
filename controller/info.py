@@ -1,11 +1,14 @@
 import re
 
+
 def check_time_control():
     choice = ["bullet", "blitz", "coup rapide"]
     time_control = input("Un bullet, un blitz ou un coup rapide: ")
-    
+
     while not time_control in choice:
-        time_control = input("Veuillez choisir entre un bullet, un blitz ou un coup rapide: ")
+        time_control = input(
+            "Veuillez choisir entre un bullet, un blitz ou un coup rapide: "
+        )
     return time_control
 
 
@@ -32,18 +35,20 @@ def int_date_birthday():
 
     return result
 
+
 def check_sex():
     choice = ["Homme", "Femme"]
     check_sex = input("Homme ou Femme: ")
-    
+
     while not check_sex in choice:
         check_sex = input("Veuillez entrer H nou F: ")
     return check_sex
+
 
 def check_players(dic_players):
     list_data = []
 
     for key, var in dic_players.items():
-        a = {key : var.return_players()}
+        a = {key: var.return_players()}
         list_data.append(a)
     return list_data

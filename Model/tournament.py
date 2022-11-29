@@ -13,9 +13,10 @@ class Tournament:
         self.pairs_matched = pairs_matched
         self.description = description
         self.rounds = rounds
+        self.end = False
 
     def __str__(self):
-        return f"OBJ_Tournois :: \n{self.name}, {self.place}, {self.date}, {self.nbr_rounds}, {self.time_control}, \n{self.players}, \n{self.rounds}, \n{self.pairs_matched}\n%%%%"
+        return f"{self.name}, {self.place}, {self.date}, {self.nbr_rounds}, {self.time_control}, {self.players}, {self.rounds}, {self.pairs_matched}"
     
     def __repr__(self):
-        return f"OBJ_Tournois r >> {self.name}, {self.place}, {self.date}, {self.nbr_rounds}, {self.time_control}, {self.players}, {self.rounds}, {self.pairs_matched}"
+        return f"{self.name}, {self.place}, {self.date}, {self.nbr_rounds}, {self.time_control}, {self.players}, {self.rounds}, {self.pairs_matched}"

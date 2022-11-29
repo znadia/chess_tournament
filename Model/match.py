@@ -46,10 +46,9 @@ class Match:
 
     def return_dic_match(self):
         return {
-                "name_match": self.name,
-                "match_played":
-                    (
-                        [self.player1, self.score_player1],
-                        [self.player2, self.score_player2]
-                    )
-                }
+            "name_match": self.name,
+            "match_played": (
+                [self.player1, self.score_player1],
+                [self.player2, self.score_player2],
+            ),
+        }

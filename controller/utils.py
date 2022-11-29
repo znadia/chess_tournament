@@ -3,14 +3,14 @@ from model.match import Match
 
 def get_matches(list_match, dic_all_players, match):
     # Crée une instance match et ajoute le score
-    
+
     for i in range(len(list_match)):
-            players_match = list_match[i]
-            i += 1
-            name_match = "match_" + str(i)
-            match_to_play = Match(name=name_match, players_pair=players_match)
-            match_to_play.add_score_match(dic_all_players)
-            match.append(match_to_play.return_dic_match())
+        players_match = list_match[i]
+        i += 1
+        name_match = "match_" + str(i)
+        match_to_play = Match(name=name_match, players_pair=players_match)
+        match_to_play.add_score_match(dic_all_players)
+        match.append(match_to_play.return_dic_match())
 
 
 def list_score_sorted(name_round):
@@ -18,43 +18,67 @@ def list_score_sorted(name_round):
     list_score = []
     for k in name_round.all_players.keys():
         value = name_round.all_players[k].score
-        print("**************   ", value)
         list_score.append(value)
-    sort_list = sorted(list_score, reverse = True)
+    sort_list = sorted(list_score, reverse=True)
+    return sort_list
+
+
+def list_rank_sorted(players):
+    # Récupère le classement du joueur sous forme de liste
+    list_ranks = []
+    for k in players.keys():
+        value = players[k].ranking
+        list_ranks.append(value)
+    sort_list = sorted(list_ranks)
     return sort_list
 
 
 def find_key(v, dic_players):
-    # Récupère la clef d'une valeur 
-    for k, val in dic_players.items(): 
+    # Récupère la clef d'une valeur
+    for k, val in dic_players.items():
         if v == val.score:
             return k
 
 
-##################################
-def create_ranking(name_round):
+def find_rank(v, dic_players):
+    # Récupère la clef d'une valeur
+    for k, val in dic_players.items():
+        if v == val.ranking:
+            return k
 
-    score_sorted = list_score_sorted(name_round)
-    print('list_scor_sorted    ========   ', score_sorted)
-    # Crée une liste trier des clefs 
-    players_cop = name_round.all_players.copy()
+
+def players_ranking(players, score_sorted):
+
+    # Crée une liste trier des clefs
+    players_cop = players.copy()
     player_ranked = []
-    #i = 1
     for score in score_sorted:
         k = find_key(score, players_cop)
-        #name_round.all_players[k].ranking = i
         player_ranked.append(k)
-        del(players_cop[k])
-        #i += 1
+        del players_cop[k]
     return player_ranked
 
 
-def sorted_players(dic_players, list_players):
-    # Crée un dictionnaire trié des joueurs 
-    dic_sorted = {}
+def rank_player(players, score_sorted):
 
+    # Crée une liste trier des clefs
+    players_cop = players.copy()
+    player_ranked = []
+    for score in score_sorted:
+        k = find_rank(score, players_cop)
+        player_ranked.append(k)
+        del players_cop[k]
+    return player_ranked
+
+
+def sorted_players(player):
+    # Crée un dictionnaire trié des joueurs
+
+    rank = list_rank_sorted(player)
+    list_players = rank_player(player, rank)
+    dic_sorted = {}
     for key in list_players:
-        dic_sorted[key] = dic_players[key]
+        dic_sorted[key] = player[key]
 
     return dic_sorted
 
@@ -87,5 +111,3 @@ def new_round(list_players, list_match):
             x += 1
     list_match.extend(new_match)
     return new_match
-
-
