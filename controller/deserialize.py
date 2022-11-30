@@ -1,6 +1,5 @@
 from model.tournament import Tournament
 from model.player import Player
-from model.round import Round
 
 
 def players(dic_file, name_file):
@@ -18,7 +17,7 @@ def players(dic_file, name_file):
 
 
 def tournement(dic_info, name_file, obj_pl):
-    ## deserialize le tournoi
+    # deserialize le tournoi
     x = []
     lst_r = dic_info[name_file].get("rounds")
     lst_m = dic_info[name_file].get("pairs_matched")

@@ -1,8 +1,8 @@
 from model.tournament import Tournament
 from model.player import Player
-import controller.info
+import view.info
 
-info = controller.info
+info = view.info
 
 
 def create_players():
@@ -47,13 +47,22 @@ def create_info_tournament():
     date = input("Date du tournoi: ")
     t_c = info.check_time_control()
     dic_players = create_players()
-    players = info.check_players(dic_players)
+    players = check_players(dic_players)
     nbr_rounds = info.check_nbr_round()
     desc = input("Description du tournoi ")
     t = Tournament(name, place, date, nbr_rounds, t_c, players, [], desc, [])
     dic_info[name] = t
 
     return dic_info, dic_players
+
+
+def check_players(dic_players):
+    list_data = []
+
+    for key, var in dic_players.items():
+        a = {key: var.return_players()}
+        list_data.append(a)
+    return list_data
 
 
 def change_rank(dic_players):

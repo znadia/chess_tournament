@@ -1,9 +1,17 @@
-
-
 class Tournament:
-    
-    def __init__(self, name, place, date, nbr_rounds, time_control, players, pairs_matched, description, rounds):
-        
+    def __init__(
+        self,
+        name,
+        place,
+        date,
+        nbr_rounds,
+        time_control,
+        players,
+        pairs_matched,
+        description,
+        rounds,
+    ):
+
         self.name = name
         self.place = place
         self.date = date
@@ -16,7 +24,7 @@ class Tournament:
         self.end = False
 
     def __str__(self):
-        return f"{self.name}, {self.place}, {self.date}, {self.nbr_rounds}, {self.time_control}, {self.players}, {self.rounds}, {self.pairs_matched}"
-    
+        return f"{self.name}"
+
     def __repr__(self):
-        return f"{self.name}, {self.place}, {self.date}, {self.nbr_rounds}, {self.time_control}, {self.players}, {self.rounds}, {self.pairs_matched}"
+        return f"{self.name}"

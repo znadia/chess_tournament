@@ -2,13 +2,14 @@ import os
 
 import inquirer
 
-import database
-import controller.utils
+import controller.database
+import controller.player
 import controller.tournament
 from view.table import ViewTable
 
-utils = controller.utils
+play = controller.player
 tournament = controller.tournament
+database = controller.database
 viewtable = ViewTable()
 
 
@@ -19,7 +20,10 @@ class ViewMenu:
             inquirer.List(
                 "size",
                 message="Que voulez-vous faire ?",
-                choices=["Créer un tournoi", "Reprendre un tournoi", "Quitter"],
+                choices=[
+                    "Créer un tournoi",
+                    "Reprendre un tournoi",
+                    "Quitter"],
             ),
         ]
         answers = inquirer.prompt(questions)
@@ -29,7 +33,7 @@ class ViewMenu:
 
         if answers["size"] == "Reprendre un tournoi":
             try:
-                return self.display_tournement(), 0
+                return self.display_tournement(), 1
             except:
                 print("Aucun tournoi enregistré\n")
                 return self.display_start_menu()
@@ -44,7 +48,6 @@ class ViewMenu:
             os.system("mkdir data")
         return database.create_db_file(name_tournament)
 
-
     def display_report(self, dic_tournement, player, db):
         # Affiche les rapports
         name_file = list(dic_tournement.keys())[0]
@@ -52,7 +55,11 @@ class ViewMenu:
             inquirer.List(
                 "size",
                 message="Quel rapport voulez-vous visualiser ?",
-                choices=["Joueurs", "Rounds/Matches", "Tournois", "Menu précédent"],
+                choices=[
+                    "Joueurs",
+                    "Rounds/Matches",
+                    "Tournois",
+                    "Menu précédent"],
             ),
         ]
         answers = inquirer.prompt(questions)
@@ -68,10 +75,11 @@ class ViewMenu:
             answers = inquirer.prompt(questions)
 
             if answers["size"] == "Par ordre alphabétique":
-                viewtable.display_table_tournament(player)
+                dic_name = play.sorted_players(player, "name")
+                viewtable.display_table_tournament(dic_name)
 
             if answers["size"] == "Par classement":
-                dic_rank = utils.sorted_players(player)
+                dic_rank = play.sorted_players(player, "ranking")
                 viewtable.display_table_tournament(dic_rank)
 
         if answers["size"] == "Rounds/Matches":
@@ -82,11 +90,8 @@ class ViewMenu:
             files = os.listdir("data/")
             viewtable.display_tournement(files)
 
-        return self.display_menu_all(dic_tournement, player, db)
-
-
     def display_tournement(self):
-        # Affiche tout les tournois 
+        # Affiche tout les tournois
         db = []
         for file in os.listdir("data/"):
             db.append(file)
@@ -98,14 +103,11 @@ class ViewMenu:
             ),
         ]
         answers = inquirer.prompt(questions)
-
         data = database.open_db(answers["size"])
-        if data == False:
+        if data is False:
             return self.display_tournement()
         else:
             return data
-
-    #########################################################################################
 
     def display_menu_all(self, dic_tournement, player, db):
         # Menu principal
@@ -114,8 +116,8 @@ class ViewMenu:
                 "size",
                 message="Que voulez-vous faire ?",
                 choices=[
-                    "Sauvegarder les informations",
                     "Continuer",
+                    "Sauvegarder les informations",
                     "Visualiser les rapport",
                     "Changer le classement",
                     "Reprendre un tournoi",
@@ -125,17 +127,17 @@ class ViewMenu:
         ]
         answers = inquirer.prompt(questions)
 
-        if answers["size"] == "Sauvegarder les informations":
-            database.insert_db_info(dic_tournement, db)
-            print("L'enregistrement a été effectué avec succès.")
-            self.display_menu_all(dic_tournement, player, db)
-            return dic_tournement, None
-
         if answers["size"] == "Continuer":
             return dic_tournement, None
 
+        if answers["size"] == "Sauvegarder les informations":
+            database.insert_db_info(dic_tournement, db)
+            print("L'enregistrement a été effectué avec succès.")
+            return self.display_menu_all(dic_tournement, player, db)
+
         if answers["size"] == "Visualiser les rapport":
             self.display_report(dic_tournement, player, db)
+            return self.display_menu_all(dic_tournement, player, db)
 
         if answers["size"] == "Changer le classement":
             tournament.change_rank(player)

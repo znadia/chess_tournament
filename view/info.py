@@ -5,7 +5,7 @@ def check_time_control():
     choice = ["bullet", "blitz", "coup rapide"]
     time_control = input("Un bullet, un blitz ou un coup rapide: ")
 
-    while not time_control in choice:
+    while time_control not in choice:
         time_control = input(
             "Veuillez choisir entre un bullet, un blitz ou un coup rapide: "
         )
@@ -20,7 +20,7 @@ def check_nbr_round():
         print("Le nombre de round sera de 4 par defaut")
     return nbr
 
-    while not nbr.isnumeric() == True:
+    while not nbr.isnumeric() is True:
         nbr = input("Veuillez le nombre de round: ")
     return nbr
 
@@ -37,18 +37,9 @@ def int_date_birthday():
 
 
 def check_sex():
-    choice = ["Homme", "Femme"]
+    choice = ["Homme", "Femme", "h", "f"]
     check_sex = input("Homme ou Femme: ")
 
-    while not check_sex in choice:
-        check_sex = input("Veuillez entrer H nou F: ")
+    while check_sex not in choice:
+        check_sex = input("Veuillez entrer h nou f: ")
     return check_sex
-
-
-def check_players(dic_players):
-    list_data = []
-
-    for key, var in dic_players.items():
-        a = {key: var.return_players()}
-        list_data.append(a)
-    return list_data

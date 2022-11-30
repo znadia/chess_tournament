@@ -21,10 +21,11 @@ class ViewTable:
             )
         console.print(table)
 
-    def display_table_round(self, players, name_round):
+    def display_table_round(self, players, name_round, name_file):
         # Affiche les matches qui vont etre joués
         table = Table(show_header=True, header_style="bold magenta")
-        table.add_column(name_round.name)
+        name_tournament = name_file + ": " + name_round.name
+        table.add_column(name_tournament)
 
         for player in players:
             table.add_row(f"{player[0]} vs {player[1]}")
@@ -41,7 +42,6 @@ class ViewTable:
     def display_end_time(self, name_round):
         # Affiche l'heure de fin
         name_round.end_time = name_round.get_times()
-        print(name_round.end_time)
         table = Table(show_header=True, header_style="bold magenta")
         table.add_column(" Fin du round ")
         table.add_row(name_round.end_time)
