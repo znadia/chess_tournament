@@ -26,12 +26,9 @@ def create_players():
         x += 1
 
     create_players = dict(sorted(create_players.items()))
-    print(create_players)
 
     i = 1
     for player in create_players:
-        print("i = ", i)
-        print("player = ", player)
         dic_players["joueur_" + str(i)] = create_players[player]
         i += 1
 
