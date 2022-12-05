@@ -1,5 +1,7 @@
 from rich.console import Console
 from rich.table import Table
+from operator import itemgetter
+
 
 console = Console()
 
@@ -9,7 +11,7 @@ class ViewTable:
         # Affiche tout sur les joueurs
         table = Table(show_header=True, header_style="bold magenta")
         table.add_column("Joueurs")
-        table.add_column("Prénom", style="dim", width=12)
+        table.add_column("Nom et Prénom", style="dim", width=20)
         table.add_column("Classement")
         table.add_column("Score")
         for player in players:
@@ -54,10 +56,10 @@ class ViewTable:
         table.add_column("Match")
         table.add_column("Joueurs")
 
-        for k in rounds:
-            for match in k.get("matches"):
+        for r in rounds:
+            for match in r.get("matches"):
                 table.add_row(
-                    f"{k.get('name_round')}",
+                    f"{r.get('name_round')}",
                     f"{match.get('name_match')}",
                     f"{match.get('match_played')}",
                 )
@@ -69,4 +71,23 @@ class ViewTable:
         table.add_column("Tournois")
         for file in tournement:
             table.add_row(f"{file}")
+        console.print(table)
+
+    def display_all_player(self, data, n_file, option):
+        # Affiche tout les acteurs des tournois
+        table = Table(show_header=True, header_style="bold magenta")
+        table.add_column("Nom et Prénom", style="dim", width=20)
+        table.add_column("Classement")
+        table.add_column("Score")
+
+        player = []
+        for datas in data:
+            for i in datas:
+                player.append(datas[i])
+        for x in sorted(player, key=itemgetter(option)):
+            table.add_row(
+                f"{x['name']} {x['first_name']}",
+                f"{x['ranking']}",
+                f"{x['score']}",
+            )
         console.print(table)

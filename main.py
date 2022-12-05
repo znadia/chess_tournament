@@ -1,11 +1,10 @@
-from model.round import Round
-import controller.tournament
-import controller.player
-import controller.utils
 import controller.deserialize
-from view.table import ViewTable
+import controller.player
+import controller.tournament
+import controller.utils
+from model.round import Round
 from view.menu import ViewMenu
-
+from view.table import ViewTable
 
 viewtable = ViewTable()
 viewmenu = ViewMenu()
@@ -23,6 +22,7 @@ if p == 1:
     dic_players = deserialize.players(dic_info, name_file)
     dic_info = deserialize.tournement(dic_info, name_file, dic_players)
     nbr = len(dic_info[name_file].rounds) + 1
+    viewmenu.display_menu(dic_info, dic_players, db_file, False)
 
 else:
     dic_info = info
@@ -30,8 +30,7 @@ else:
     name_file = list(dic_info.keys())[0]
     db_file = viewmenu.create_name_file(name_file)
     nbr = 1
-
-dic_info, new = viewmenu.display_menu_all(dic_info, dic_players, db_file)
+    viewmenu.display_menu(dic_info, dic_players, db_file, True)
 
 pairs_matched = dic_info[name_file].pairs_matched
 while nbr <= (int(dic_info[name_file].nbr_rounds)):
@@ -68,10 +67,4 @@ while nbr <= (int(dic_info[name_file].nbr_rounds)):
 
 
 dic_info[name_file].end = True
-viewmenu.the_end(dic_info, db_file)
-viewtable.display_table_tournament(dic_players)
-
-print("\n")
-print("|############################################################|")
-print("|                             FIN                            |")
-print("|############################################################|")
+viewmenu.the_end(dic_info, db_file, dic_players)

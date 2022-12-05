@@ -13,16 +13,18 @@ def check_time_control():
 
 
 def check_nbr_round():
-    nbr = input("nombre de round: ")
+    nbr = input(
+        "Il y 4 rounds par defaut, souhaitez-vous le modifier? [oui/non]"
+    )
 
-    if not nbr:
+    if nbr == "non":
         nbr = 4
-        print("Le nombre de round sera de 4 par defaut")
-    return nbr
+        return nbr
 
-    while not nbr.isnumeric() is True:
-        nbr = input("Veuillez le nombre de round: ")
-    return nbr
+    if nbr == "oui":
+        while not nbr.isnumeric():
+            nbr = input("Veuillez le nombre de round: ")
+        return nbr
 
 
 def int_date_birthday():
@@ -43,3 +45,11 @@ def check_sex():
     while check_sex not in choice:
         check_sex = input("Veuillez entrer h nou f: ")
     return check_sex
+
+
+def check_ranking():
+
+    nbr = input("Classement: ")
+    while not nbr.isnumeric():
+        nbr = input("Veuillez entrer un chiffre: ")
+    return nbr

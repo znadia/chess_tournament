@@ -1,6 +1,6 @@
-from model.tournament import Tournament
-from model.player import Player
 import view.info
+from model.player import Player
+from model.tournament import Tournament
 
 info = view.info
 
@@ -16,7 +16,7 @@ def create_players():
         p_first_name = input("Prénom: ")
         p_d_o_b = info.int_date_birthday()
         p_sex = info.check_sex()
-        p_rank = input("Classement: ")
+        p_rank = info.check_ranking()
         p = Player(p_name, p_first_name, p_d_o_b, p_sex, p_rank, 0)
         key = p_rank
         if key == "0":
@@ -57,6 +57,7 @@ def create_info_tournament():
 
 
 def check_players(dic_players):
+    # Convertie un dictionnaire en liste
     list_data = []
 
     for key, var in dic_players.items():

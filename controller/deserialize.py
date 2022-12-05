@@ -1,5 +1,5 @@
-from model.tournament import Tournament
 from model.player import Player
+from model.tournament import Tournament
 
 
 def players(dic_file, name_file):

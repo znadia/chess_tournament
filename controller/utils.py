@@ -13,34 +13,26 @@ def get_matches(list_match, dic_all_players, match):
         match.append(match_to_play.return_dic_match())
 
 
-def check_match(list_match, player_1, player_2):
-    # Check les matches passé
-    sorted_player = sorted([player_1, player_2])
-    if sorted_player in list_match:
-        return False
-    else:
-        return sorted_player
-
-
 def new_round(list_players, list_match):
     # Crée des nouveaux matches
     list_players_cop = list_players.copy()
     new_match = []
     i = 0
-    x = 1
+    x = 0
     while i < len(list_players_cop):
         while x < len(list_players_cop):
+            sorted_player = sorted([list_players_cop[i], list_players_cop[x]])
+            if len(list_players_cop) == 2 and sorted_player in list_match:
+                list_players_cop[:0] = new_match[-1:4][0]
+                del new_match[-1:4]
             if list_players_cop[i] != list_players_cop[x]:
-                ret = check_match(
-                        list_match,
-                        list_players_cop[i],
-                        list_players_cop[x])
-                if ret is not False:
-                    new_match.append(ret)
+                if sorted_player not in list_match:
+                    new_match.append(sorted_player)
                     del list_players_cop[x]
                     del list_players_cop[i]
                     x = 0
                     i = 0
             x += 1
-    list_match.extend(new_match)
-    return new_match
+
+        list_match.extend(new_match)
+        return new_match
