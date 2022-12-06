@@ -32,11 +32,12 @@ else:
     nbr = 1
     viewmenu.display_menu(dic_info, dic_players, db_file, True)
 
-pairs_matched = dic_info[name_file].pairs_matched
+
 while nbr <= (int(dic_info[name_file].nbr_rounds)):
     name_round = "round_" + str(nbr)
     name_round = Round(name=name_round, all_players=dic_players)
     if nbr == 1:
+        pairs_matched = dic_info[name_file].pairs_matched
         # Déroulement d'un Round/Matches
         viewtable.display_start_time(name_round)
         name_round.first_round()
