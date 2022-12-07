@@ -28,4 +28,4 @@ Windows:
 
 #### 4.Exécution du script:
 
-`python main.py`
+`python main/main.py`
